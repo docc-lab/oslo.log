@@ -44,6 +44,8 @@ from oslo_utils import units
 import six
 from six import moves
 
+from osprofiler import profiler
+
 from oslo_log._i18n import _
 from oslo_log import _options
 from oslo_log import formatters
@@ -135,6 +137,7 @@ class KeywordArgumentAdapter(BaseLoggerAdapter):
     """
 
     def process(self, msg, kwargs):
+        profiler.annotate('log', from_oslo_log=True, info={'msg': msg})
         # Make a new extra dictionary combining the values we were
         # given when we were constructed and anything from kwargs.
         extra = {}
